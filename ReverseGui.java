@@ -3,21 +3,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JFrame;
-public class ReverseGui extends JFrame implements ActionListener{
+public class ReverseGui extends JFrame{
     JButton reverseBtn = new JButton("Reverse String");
-    JTextField reverseText = new JTextField("wrong text space",60);
+    JLabel reverseText = new JLabel("Welcome to Reverser");
     JTextField inputText = new JTextField("Input text here.",30);
     JTextField outputText = new JTextField("String Reversed", 30);
     private ReverseMyStuff rVM = new ReverseMyStuff();
     public ReverseGui(){
-        //create Frame
+        //create Frame and add WindowListener
         JFrame  frame = new JFrame("My Frame");
         //set size
         frame.setSize(new Dimension(500,500));
         //make sure frame exits on close
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
         //create container
         Container contentPane = frame.getContentPane();
         //set contentPane layout
@@ -25,40 +23,36 @@ public class ReverseGui extends JFrame implements ActionListener{
         //Make labels
         JLabel input = new JLabel("Input");
         JLabel output = new JLabel("Output");
-        //Make textFields
-
-
-        //Make a panel for the input out put
+        //Make a panel for the input output
         JPanel inOutPanel = new JPanel();
         inOutPanel.setBackground(Color.RED);
         inOutPanel.setLayout(new GridLayout(2,2));
-        //add labels to panel
+        //add labels adn textFields to panel
         inOutPanel.add(input);
         inOutPanel.add(inputText);
         inOutPanel.add(output);
         inOutPanel.add(outputText);
         //make a button
         JButton btnOK = new JButton("OK");
-
+        btnOK.addActionListener(new GetText());
         //make a second button
         JButton btnCncl = new JButton("Cancel");
-
-        //trying to get  ActionListener to work
-
-        reverseText.addActionListener(this);
-
+        btnCncl.addActionListener(new CloseGUI());
         // work on getting the textField placed
+        inputText.addFocusListener(new FocusListener() {
+            public void focusLost(final FocusEvent pE) {}
+            public void focusGained(final FocusEvent pE) {
+                inputText.selectAll();
+            }
+        });
         JPanel textFieldPanel = new JPanel();
-
-        //add textField to the textFieldPanel
+        //adding a label to the north part of frame
         textFieldPanel.add(reverseText);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(btnOK);
         buttonPanel.add(btnCncl);
         buttonPanel.setBackground(Color.GREEN);
-
-
         //add components
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
         contentPane.add(textFieldPanel,BorderLayout.NORTH);
@@ -69,62 +63,43 @@ public class ReverseGui extends JFrame implements ActionListener{
         //center the GUI
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        //putting the focus on the input text field
+        frame.addWindowListener(new WindowAdapter() {
+              public void windowOpening(WindowEvent windowEvent){
+                inputText.requestFocus();
+           }
+        });
         // make visible
         frame.setVisible(true);
-
-    }
-    //working on
-
-    public void actionPerformed(ActionEvent evt) {
-        //String text = reverseText.getText();
-        //ReverseGui temp = new ReverseGui();
-        //System.out.println(text);
-        //reverseText.selectAll();
-        //System.out.println();
     }
     private class CloseGUI implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
     }
-    //ActionListener to change the outputText to what is in the reverseText
+    //ActionListener to change the outputText to what is in the inputText
     private class GetText implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String text = inputText.getText();
             outputText.setText(rVM.reverser(text));
         }
     }
-    //this is a class to make my buttons
+    //this is a class to make my buttons so i can put them every where
     public class getMyButtons extends JPanel{
         public getMyButtons(){
-            //make a panel to store the buttons on
-            //JPanel buttonPanel = new JPanel();
-            //add btn to panels
             setBackground(Color.pink);
-
-            //
+            //the ok button that when pressed will reverse the string
             JButton okbtn = new JButton("OK");
             okbtn.addActionListener(new GetText());
             this.add(okbtn);
-            //trying some stuff
-
+            //cancel button to exit the application
             JButton cnclBtn = new JButton("Cancel");
             cnclBtn.addActionListener(new CloseGUI());
             this.add(cnclBtn);
-            //this.add(new JButton("Cancel").addActionListener(new closeGUI()));
-            //set color
-            //this.setBackground(Color.GREEEN);
         }
+        //color changer because yeah
         public void setColor(Color clr){
             this.setBackground(clr);
         }
-    }
-    //this is a class to make an empty space on the north side of gui
-    public class emptySpace extends JPanel{
-        public emptySpace(){
-            setBackground(Color.blue);
-            //setSize(1400,1300);
-        }
-
     }
 }
