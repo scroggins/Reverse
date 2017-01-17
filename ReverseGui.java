@@ -1,11 +1,11 @@
 /**
 * @Author: Randy Scroggins <scroggir>
-* @Date:   01-09-2017
+* @Date:   09-01-2017
 * @Email:  scroggins@csus.edu
 * @Project: Reverser
 * @Filename: ReverseGui.java
 * @Last modified by:   scroggir
-* @Last modified time: 15-01-2017
+* @Last modified time: 16-01-2017
 */
 
 
@@ -15,14 +15,12 @@ import javax.swing.*;
 import javax.swing.JFrame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-public class ReverseGui extends JFrame{
+
+class ReverseGui extends JFrame{
     Boolean firstClick = true;
-    JButton reverseBtn = new JButton("Reverse String");
-    JLabel reverseText = new JLabel("Welcome to Reverser");
     JTextField inputText = new JTextField("Input text here.",30);
     JTextField outputText = new JTextField("String Reversed", 30);
-    private ReverseMyStuff rVM = new ReverseMyStuff();
-    public ReverseGui(){
+    protected ReverseGui(){
         //create Frame and add WindowListener
         JFrame  frame = new JFrame("My Frame");
         //make sure frame exits on close
@@ -59,7 +57,7 @@ public class ReverseGui extends JFrame{
         horizGroup.addGroup(inOutLayout.createParallelGroup().addComponent(input).addComponent(output));
         horizGroup.addGroup(inOutLayout.createParallelGroup().addComponent(inputText).addComponent(outputText));
         inOutLayout.setHorizontalGroup(horizGroup);
-        //set veritcal group
+        //set vertical group
         GroupLayout.SequentialGroup vertGroup = inOutLayout.createSequentialGroup();
         vertGroup.addGroup(inOutLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(input).addComponent(inputText));
         vertGroup.addGroup(inOutLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(output).addComponent(outputText));
@@ -82,7 +80,7 @@ public class ReverseGui extends JFrame{
                 outputText.selectAll();
             }
         });
-        //highlight when input is focused
+        //highlight when input is focused and remove when not focused
         inputText.addFocusListener(new FocusListener() {
             public void focusLost(final FocusEvent pE) {
                 inputText.getHighlighter().removeAllHighlights();
@@ -92,7 +90,8 @@ public class ReverseGui extends JFrame{
             }
         });
         JPanel textFieldPanel = new JPanel();
-        //adding a label to the north part of frame
+        //create and add a label to the north part of frame
+        JLabel reverseText = new JLabel("Welcome to Reverser");
         textFieldPanel.add(reverseText);
         //button and button panel for the south of the frame
         JPanel buttonPanel = new JPanel();
@@ -115,19 +114,17 @@ public class ReverseGui extends JFrame{
                 inputText.requestFocus();
            }
         });
-        //**************************************************************
         //clear the input textfield when clicked
         inputText.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                //quick dirty way of dealling with the field repeatedly getting cleared
+                //quick dirty way of dealing with the field repeatedly getting cleared
                 if(firstClick){
                     inputText.setText("");
                     firstClick = false;
                 }
             }
         });
-        //**************************************************************
         // make visible
         frame.setVisible(true);
     }
@@ -140,18 +137,18 @@ public class ReverseGui extends JFrame{
     private class GetText implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String text = inputText.getText();
-            outputText.setText(rVM.reverser(text));
+            outputText.setText(ReverseMyStuff.reverser(text));
         }
     }
     private class WordByWord implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String text = inputText.getText();
-            outputText.setText(rVM.wordReverser(text));
+            outputText.setText(ReverseMyStuff.wordReverser(text));
         }
     }
-    //this is a class to make my buttons so i can put them every where
-    public class getMyButtons extends JPanel{
-        public getMyButtons(){
+    //this is a class to make my buttons so I can put them every where
+    private class getMyButtons extends JPanel{
+        private getMyButtons(){
             setBackground(Color.pink);
             //the ok button that when pressed will reverse the string
             JButton okbtn = new JButton("OK");
@@ -161,10 +158,6 @@ public class ReverseGui extends JFrame{
             JButton cnclBtn = new JButton("Cancel");
             cnclBtn.addActionListener(new CloseGUI());
             this.add(cnclBtn);
-        }
-        //color changer because yeah
-        public void setColor(Color clr){
-            this.setBackground(clr);
         }
     }
 }

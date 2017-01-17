@@ -1,29 +1,24 @@
 /**
 * @Author: Randy Scroggins <scroggir>
-* @Date:   01-09-2017
+* @Date:   09-01-2017
 * @Email:  scroggins@csus.edu
 * @Project: Reverser
 * @Filename: ReverseMyStuff.java
 * @Last modified by:   scroggir
-* @Last modified time: 15-01-2017
+* @Last modified time: 16-01-2017
 */
 
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class ReverseMyStuff{
+class ReverseMyStuff{
     //in class tester for the different methods
-
+/*
     public static void main(String[] args) {
         String test = "this is a test of our reverser _ - = = +_ .     . . . . . .  hello.";
         System.out.println("reverser: "+reverser(test)
         +"\nword reverser: "+wordReverser(test));
     }
-
+*/
     //takes a string and reverses the order of the chars
-    public static String reverser(String orig){
+    static String reverser(String orig){
         char charArray[] = new char[orig.length()];
         String reversedString = "";
         charArray = orig.toCharArray();
@@ -34,13 +29,15 @@ public class ReverseMyStuff{
         return reversedString;
     }
     //takes a string and sends the words to get reveresed
-    public static String wordReverser(String orig){
-        //todo to get punctuation to stay put and keep the spaces between words
+    static String wordReverser(String orig){
+        //todo to get punctuation to stay put
         String splitter[] = orig.split(" ");
         String complete = "";
-        for(int i = 0 ; i < splitter.length; i++){
-            complete = complete + reverser(splitter[i]+" ");
+        for(int i = 0 ; i < splitter.length-1; i++){
+            complete = complete + reverser(splitter[i])+" ";
         }
+        //so the last word wont have a space after it
+        complete = complete + reverser(splitter[splitter.length-1]);
         return complete;
     }
 }
